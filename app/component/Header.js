@@ -71,7 +71,6 @@ const Header = () => {
           <Stylednav>
             <NavLink href={"/"}>Home</NavLink>
             <NavLink href={"/Products"}>Products</NavLink>
-            <NavLink href={"/Categories"}>Categories</NavLink>
             <NavLink href={"/Orders"}>Orders</NavLink>
             <NavLink href={"/Cart"}>Cart({cartCount})</NavLink>
             <NavLink href={"/Login"}>{username.length>0?`Hello(${username})`:"Login"}</NavLink>
