@@ -57,7 +57,7 @@ const Feature = ({ product }) => {
               <Title>{product.name}</Title>
               <StyledP>{product.description}</StyledP>
               <ButtonWrapper>
-                <ButtonLink href={`/ReadMore/${product._id}`} $primary>
+                <ButtonLink href={`/Product/${product._id}`} $primary>
                   Read More
                 </ButtonLink>
                 <ButtonLink onClick={() => addFeaturedtocart()}>
