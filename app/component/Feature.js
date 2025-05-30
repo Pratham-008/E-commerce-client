@@ -42,6 +42,21 @@ const ButtonWrapper = styled.div`
   margin-top: 25px;
   gap: 15px;
 `;
+const AncorLink = styled.a`
+background-color: #eee;
+  color: #222;
+  text-decoration: none;
+  padding: 7px 15px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  svg {
+    height: 20px;
+    margin-right: 5px;
+  }
+    width:fit-content;`;
 
 const Feature = ({ product }) => {
   const { addproduct } = useContext(CartContext);
@@ -57,9 +72,9 @@ const Feature = ({ product }) => {
               <Title>{product.name}</Title>
               <StyledP>{product.description}</StyledP>
               <ButtonWrapper>
-                <ButtonLink href={`/Product/${product._id}`} $primary>
+                <AncorLink href={`/Product/${product._id}`} $primary>
                   Read More
-                </ButtonLink>
+                </AncorLink>
                 <ButtonLink onClick={() => addFeaturedtocart()}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
