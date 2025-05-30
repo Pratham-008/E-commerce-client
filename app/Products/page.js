@@ -1,20 +1,41 @@
-// pages/index.js
-
+"use client";
 import Header from "../component/Header";
-import { Products } from "@/model/product";
-import { mongooseconnect } from "@/lib/mongoose";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import NewProducts from "../component/NewProducts";
 
 
 
-export default async function Home() {
-  await mongooseconnect();
-  const newproducts = await Products.find({}).sort({ updatedAt: -1 }).lean();
-  console.log(newproducts)
+export default  function Home() {
+  const [newproducts, setnewProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+      const fetchdata = async () => {
+        try {
+          const { data } = await axios.get("/api/products");
+          console.log(data);
+          setnewProducts(data.newproducts);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoading(false);
+          console.log(newproducts);
+        }
+      };
+  
+      fetchdata();
+    }, []);
   return (
     <div>
       <Header/>
-      <NewProducts newproducts={JSON.parse(JSON.stringify(newproducts))} title="All Products" />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <NewProducts newproducts={newproducts} title="All Products" />
+      )}
+      
     </div>
   );
 }

@@ -75,7 +75,7 @@ const Feature = ({ product }) => {
             </div>
           </Column>
           <Column>
-            <img src={product.images[0]} alt="BMW M4" />
+            <img src={product.images[0]} alt={product.name} />
           </Column>
         </Wrapper>
       </Center>
