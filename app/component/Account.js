@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Input from "./Input";
 import { useRouter } from "next/navigation";
 import Primarybtn from "./Primarybtn";
+import { set } from "mongoose";
 
 function getAllCookies() {
   const cookies = document.cookie.split("; ");
@@ -16,6 +17,22 @@ function getAllCookies() {
   });
 
   return cookieObject;
+}
+
+function removeAllCookies(){
+
+const cookies = document.cookie.split("; ");
+  cookies.forEach((cookie) => {
+    const eqPos = cookie.indexOf("=");
+    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = `${name}=; Max-Age=0; path=/;`;
+  });
+
+  console.log("All cookies removed");
+
+
+  
+
 }
 
 
@@ -97,6 +114,7 @@ export default function Account() {
 
   useEffect(() => {
     setcookie(getAllCookies());
+
   }, []);
   useEffect(() => {
     if (activeMenu === "Your Orders") {
@@ -173,7 +191,7 @@ export default function Account() {
             </Styledmenudiv>
             <Styledmenudiv
               $active={activeMenu === "Logout"}
-              onClick={() => setActiveMenu("Logout")}
+              onClick={() => {setActiveMenu("Logout")}}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -261,6 +279,19 @@ export default function Account() {
                 )}
               </Primarybtn>
             </ButtonRow>
+          </Inputdiv>
+        )}
+        {activeMenu === "Logout" && (
+          <Inputdiv>
+            <h2>Are you sure you want to logout?</h2>
+            <Primarybtn
+              $block
+              onClick={() => {
+                 removeAllCookies(); window.location.href = "/Login";
+              }}
+            >
+              Yes, Logout
+            </Primarybtn>
           </Inputdiv>
         )}
 

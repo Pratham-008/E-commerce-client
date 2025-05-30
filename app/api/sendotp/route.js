@@ -1,8 +1,8 @@
 import { Twilio } from "twilio";
 
 export async function GET(){
-    const usersid = "ACc851a779eda7642f2e71ea221094e3f5";
-    const authtoken="64b20571f1e484a8cde2b7a0e728916f";
+    const usersid = process.env.TWILIO_ACCOUNT_SID;
+    const authtoken=process.env.TWILIO_AUTH_TOKEN;
     const phonenumber = "+919925191465";
     const client = new Twilio(usersid, authtoken);
 
@@ -12,7 +12,7 @@ export async function GET(){
     client.messages
       .create({
         body: `Your OTP is ${otp}`,
-        from: "+13612661460",
+        from: "+12543308702",
         to: phonenumber,
       })
       .then((message) => console.log(message.sid))
