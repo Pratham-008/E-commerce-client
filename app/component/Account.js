@@ -40,6 +40,11 @@ const Styleddiv = styled.div`
   display: flex;
   margin: 40px 0px;
   gap: 20px;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    margin: 20px 0px;
+    gap: 10px;
+  }
 `;
 
 const Inputdiv = styled.div`
@@ -58,6 +63,18 @@ const Styledaside = styled.aside`
   border-radius: 10px;
   flex-direction: column;
   gap: 20px;
+  @media (max-width: 600px) {
+    flex-direction: row;
+    width: 100%;
+    max-width: 100vw;
+    max-height: none;
+    overflow-x: auto;
+    border-radius: 10px;
+    padding: 10px 5px;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+  }
 `;
 
 const Inputpass = styled.input`
@@ -79,6 +96,12 @@ const Styledmenudiv = styled.div`
   color: ${(props) => (props.$active ? "white" : "inherit")};
   &:hover {
     background-color: #aaa;
+  }
+  @media (max-width: 600px) {
+    min-width: 110px;
+    justify-content: center;
+    padding: 8px 6px;
+    font-size: 0.95em;
   }
 `;
 

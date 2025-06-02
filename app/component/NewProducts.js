@@ -9,13 +9,21 @@ const Productgrid = styled.div`
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 40px;
   padding-top: 5px;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const Title = styled.h2`
-font-size: 2rem;
-font-weight: normal;
-padding-top:5px;
+  font-size: 2rem;
+  font-weight: normal;
+  padding-top: 5px;
 `
+
 
 
 

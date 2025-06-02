@@ -8,7 +8,11 @@ import { CartContext } from "./CartContext";
 const Bg = styled.div`
   background-color: #222;
   color: #fff;
+  width: 100vw;
+  min-width: 100vw;
   padding: 50px 0;
+  box-sizing: border-box;
+  margin-left: calc(50% - 50vw);
 `;
 
 const Title = styled.h1`
@@ -19,28 +23,71 @@ const Title = styled.h1`
 const StyledP = styled.p`
   color: #aaa;
   font-size: 0.8rem;
+  
 `;
 
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 50px;
+  align-items: center;
   img {
     max-width: 100%;
     max-height: 200px;
     display: block;
     margin: 0 auto;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+
+  @media (max-width: 1024px) {
+    gap: 30px;
+    grid-template-columns: 1fr 1fr;
+    img {
+      max-height: 180px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    img {
+      max-height: 160px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    gap: 15px;
+    img {
+      max-height: 120px;
+    }
   }
 `;
 const Column = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    &:last-child {
+      justify-content: center;
+    }
+  }
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   margin-top: 25px;
   gap: 15px;
+  flex-wrap: wrap;
+  @media (max-width: 480px) {
+    gap: 10px;
+    width: 100%;
+  }
 `;
 const AncorLink = styled.a`
 background-color: #eee;
@@ -67,6 +114,10 @@ const Feature = ({ product }) => {
     <Bg>
       <Center>
         <Wrapper>
+          
+          <Column>
+            <img src={product.images[0]} alt={product.name} />
+          </Column>
           <Column>
             <div>
               <Title>{product.name}</Title>
@@ -89,11 +140,9 @@ const Feature = ({ product }) => {
               </ButtonWrapper>
             </div>
           </Column>
-          <Column>
-            <img src={product.images[0]} alt={product.name} />
-          </Column>
         </Wrapper>
       </Center>
+      
     </Bg>
   );
 };
