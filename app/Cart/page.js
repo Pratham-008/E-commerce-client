@@ -16,7 +16,14 @@ const CartWrapper = styled.div`
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 20px;
+
+  @media (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
 `;
+
 const Box = styled.div`
   background-color: #fff;
   display: flex;
@@ -70,6 +77,34 @@ const Styledh2 = styled.h2`
   padding-left: 10px;
 `;
 
+const MobileProductCard = styled.div`
+  display: none;
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #fff;
+  }
+`;
+
+const MobileProductImg = styled.img`
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #eee;
+`;
+
+const DesktopTableWrapper = styled.div`
+  @media (max-width: 767px) {
+    display: none;
+  }
+`;
+
 const Page = () => {
   const router = useRouter();
   let total = 0;
@@ -83,6 +118,8 @@ const Page = () => {
   const [country, setcountry] = useState("");
   const [phonenumber, setphonenumber] = useState("");
   const [Userid, setUserid] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     const cookie = getAllCookies();
     const { userid, name, id, password, mobilenumber } = cookie;
@@ -106,6 +143,16 @@ const Page = () => {
       setproducts([]);
     }
   }, [cartproducts]);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   for (const productId of cartproducts) {
     const product = products.find((product) => product._id === productId);
     if (product) {
@@ -206,32 +253,79 @@ const Page = () => {
               products.length > 0 && (
                 <>
                   <CartTitle>Cart</CartTitle>
-                  <Table>
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {products.map((product) => (
-                        <StyledRow key={product._id}>
-                          <td>
-                            <Productimg>
-                              <img src={product.images[0]} />
-                              {product.name}
-                            </Productimg>
-                          </td>
-                          <td>
-                            ₹
+                  {/* Desktop Table */}
+                  <DesktopTableWrapper>
+                    <Table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Price</th>
+                          <th>Quantity</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {products.map((product) => (
+                          <StyledRow key={product._id}>
+                            <td>
+                              <Productimg>
+                                <img src={product.images[0]} />
+                                {product.name}
+                              </Productimg>
+                            </td>
+                            <td>
+                              ₹
+                              {product.price *
+                                cartproducts.filter((id) => id == product._id)
+                                  .length}
+                            </td>
+                            <td>
+                              <Primarybtn
+                                onClick={() => lesstheproduct(product._id)}
+                              >
+                                -
+                              </Primarybtn>
+                              <QuantityLabel>
+                                {
+                                  cartproducts.filter((id) => id == product._id)
+                                    .length
+                                }
+                              </QuantityLabel>
+                              <Primarybtn
+                                onClick={() => moretheproduct(product._id)}
+                              >
+                                +
+                              </Primarybtn>
+                            </td>
+                          </StyledRow>
+                        ))}
+                        <TotalRow>
+                          <td>Total</td>
+                          <td></td>
+                          <td>₹{total}</td>
+                        </TotalRow>
+                      </tbody>
+                    </Table>
+                  </DesktopTableWrapper>
+                  {/* Mobile Product Cards */}
+                  {isMobile &&
+                    products.map((product) => (
+                      <MobileProductCard key={product._id}>
+                        <MobileProductImg src={product.images[0]} alt={product.name} />
+                        <div>
+                          <div>
+                            <b>{product.name}</b>
+                          </div>
+                          <div>
+                            Price: ₹
                             {product.price *
                               cartproducts.filter((id) => id == product._id)
                                 .length}
-                          </td>
-                          <td>
+                          </div>
+                          <div>
+                            Quantity:
                             <Primarybtn
                               onClick={() => lesstheproduct(product._id)}
+                              style={{ margin: "0 4px" }}
                             >
                               -
                             </Primarybtn>
@@ -243,25 +337,26 @@ const Page = () => {
                             </QuantityLabel>
                             <Primarybtn
                               onClick={() => moretheproduct(product._id)}
+                              style={{ margin: "0 4px" }}
                             >
                               +
                             </Primarybtn>
-                          </td>
-                        </StyledRow>
-                      ))}
-                      <TotalRow>
-                        <td>Total</td>
-                        <td></td>
-                        <td>₹{total}</td>
-                      </TotalRow>
-                    </tbody>
-                  </Table>
+                          </div>
+                        </div>
+                      </MobileProductCard>
+                    ))}
+                  {/* Mobile Total */}
+                  {isMobile && products.length > 0 && (
+                    <div style={{ fontWeight: "bold", margin: "12px 0" }}>
+                      Total: ₹{total}
+                    </div>
+                  )}
                 </>
               )
             )}
           </Box>
           {!!cartproducts.length && (
-            <Box>
+            <Box style={isMobile ? { marginTop: 16 } : {}}>
               <Styledh2>Order Information</Styledh2>
               <form
                 onSubmit={(e) => {
